@@ -27,15 +27,18 @@ const (
 )
 
 var (
-	put32     = binary.LittleEndian.PutUint32
-	put16     = binary.LittleEndian.PutUint16
-	encBase64 = base64.StdEncoding.EncodeToString
-	decBase64 = base64.StdEncoding.DecodeString
+	put32 = binary.LittleEndian.PutUint32
+	put16 = binary.LittleEndian.PutUint16
+	// EncBase64 encodes bytes to base64 string
+	EncBase64 = base64.StdEncoding.EncodeToString
+	// DecBase64 decodes base64 string to bytes
+	DecBase64 = base64.StdEncoding.DecodeString
 )
 
-// generates NTLM Negotiate type-1 message
+//	Negotiate generates NTLM Negotiate type-1 message
+//
 // for details see https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-nlmp/b34032e5-3aae-4bc6-84c3-c6d80eadf7f2
-func negotiate() []byte {
+func Negotiate() []byte {
 	ret := make([]byte, 40)
 
 	copy(ret, []byte("NTLMSSP\x00")) // protocol

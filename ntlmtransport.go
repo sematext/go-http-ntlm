@@ -44,7 +44,7 @@ func (t NtlmTransport) RoundTrip(req *http.Request) (res *http.Response, err err
 func (t NtlmTransport) ntlmRoundTrip(client http.Client, req *http.Request) (*http.Response, error) {
 	// first send NTLM Negotiate header
 	r, _ := http.NewRequest("GET", req.URL.String(), strings.NewReader(""))
-	r.Header.Add("Authorization", "NTLM "+encBase64(negotiate()))
+	r.Header.Add("Authorization", "NTLM "+EncBase64(Negotiate()))
 
 	resp, err := client.Do(r)
 	if err != nil {
@@ -87,7 +87,7 @@ func (t NtlmTransport) ntlmRoundTrip(client http.Client, req *http.Request) (*ht
 			return nil, errors.New("wrong WWW-Authenticate header")
 		}
 
-		challengeBytes, err := decBase64(ntlmChallengeString)
+		challengeBytes, err := DecBase64(ntlmChallengeString)
 		if err != nil {
 			return nil, err
 		}
@@ -117,7 +117,7 @@ func (t NtlmTransport) ntlmRoundTrip(client http.Client, req *http.Request) (*ht
 		}
 
 		// set NTLM Authorization header
-		req.Header.Set("Authorization", "NTLM "+encBase64(authenticate.Bytes()))
+		req.Header.Set("Authorization", "NTLM "+EncBase64(authenticate.Bytes()))
 		return client.Do(req)
 	}
 

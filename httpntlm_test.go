@@ -32,7 +32,7 @@ func Test_AuthenticationSuccess(t *testing.T) {
 		}
 
 		ntlmChallengeString := strings.Replace(h, "NTLM ", "", -1)
-		authenticateBytes, _ := decBase64(ntlmChallengeString)
+		authenticateBytes, _ := DecBase64(ntlmChallengeString)
 		auth, err := ntlm.ParseAuthenticateMessage(authenticateBytes, 2)
 		if err == nil {
 			err = session.ProcessAuthenticateMessage(auth)
@@ -43,7 +43,7 @@ func Test_AuthenticationSuccess(t *testing.T) {
 		} else {
 			challenge, _ := session.GenerateChallengeMessage()
 			w.Header().Add("WWW-Authenticate", `Basic realm="test"`)
-			w.Header().Add("WWW-Authenticate", "NTLM "+encBase64(challenge.Bytes()))
+			w.Header().Add("WWW-Authenticate", "NTLM "+EncBase64(challenge.Bytes()))
 			w.WriteHeader(401)
 		}
 	}))
