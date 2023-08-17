@@ -3,20 +3,20 @@ package httpntlm
 import (
 	"errors"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"strings"
 
-	"github.com/vadimi/go-ntlm/ntlm"
+	"github.com/sematext/go-ntlm/ntlm"
 )
 
 var errEmptyNtlm = errors.New("empty NTLM challenge")
 
 // NtlmTransport is implementation of http.RoundTripper interface
 type NtlmTransport struct {
-	Domain   string
-	User     string
-	Password string
+	Domain      string
+	User        string
+	Password    string
+	Workstation string
 	http.RoundTripper
 	Jar http.CookieJar
 }
@@ -54,7 +54,7 @@ func (t NtlmTransport) ntlmRoundTrip(client http.Client, req *http.Request) (*ht
 	if err == nil && resp.StatusCode == http.StatusUnauthorized {
 		// it's necessary to reuse the same http connection
 		// in order to do that it's required to read Body and close it
-		_, err = io.Copy(ioutil.Discard, resp.Body)
+		_, err = io.Copy(io.Discard, resp.Body)
 		if err != nil {
 			return nil, err
 		}
@@ -97,7 +97,7 @@ func (t NtlmTransport) ntlmRoundTrip(client http.Client, req *http.Request) (*ht
 			return nil, err
 		}
 
-		session.SetUserInfo(t.User, t.Password, t.Domain)
+		session.SetUserInfo(t.User, t.Password, t.Domain, t.Workstation)
 
 		// parse NTLM challenge
 		challenge, err := ntlm.ParseChallengeMessage(challengeBytes)

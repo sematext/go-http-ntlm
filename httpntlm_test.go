@@ -1,26 +1,27 @@
 package httpntlm
 
 import (
-	"io/ioutil"
+	"io"
 	"net/http"
 	"net/http/httptest"
 	"strings"
 	"testing"
 
-	"github.com/vadimi/go-ntlm/ntlm"
+	"github.com/sematext/go-ntlm/ntlm"
 )
 
 func Test_AuthenticationSuccess(t *testing.T) {
 	client := http.Client{
 		Transport: &NtlmTransport{
-			Domain:   "dt",
-			User:     "testuser",
-			Password: "fish",
+			Domain:      "dt",
+			User:        "testuser",
+			Password:    "fish",
+			Workstation: "",
 		},
 	}
 
 	session, _ := ntlm.CreateServerSession(ntlm.Version2, ntlm.ConnectionlessMode)
-	session.SetUserInfo("testuser", "fish", "dt")
+	session.SetUserInfo("testuser", "fish", "dt", "")
 
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
@@ -61,7 +62,7 @@ func Test_AuthenticationSuccess(t *testing.T) {
 			t.Error(err)
 		}
 	}()
-	_, err = ioutil.ReadAll(resp.Body)
+	_, err = io.ReadAll(resp.Body)
 	if err != nil {
 		t.Error(err)
 	}

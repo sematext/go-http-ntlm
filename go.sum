@@ -1,2 +1,2 @@
-github.com/vadimi/go-ntlm v1.2.1 h1:y2xZf/a5+BJlYNJIIulP1q8F438H9bU7aGcYE53vghQ=
-github.com/vadimi/go-ntlm v1.2.1/go.mod h1:hPTY60eLSKGj9oUJAB+kZiLs2Cg5eKdH60aLczM9rMg=
+github.com/sematext/go-ntlm v0.0.0-20230817113007-b05d65ad37bf h1:PN1Wq4pLbC28BGLnJZWy8KieRsAixgxMqqwXyf/4wqs=
+github.com/sematext/go-ntlm v0.0.0-20230817113007-b05d65ad37bf/go.mod h1:x2y0HYEl5fmcOONJa7Gu8JCtKZn+kKTHXtOR8Yrbeck=
